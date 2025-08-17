@@ -7,8 +7,9 @@ pnpm-debug.log*
 dist/
 build/
 .env
-.env.*.local
+.env.local
 *.local
+
 
 # Logs
 logs/
