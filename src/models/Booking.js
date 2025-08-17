@@ -1,40 +1,49 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const BookingSchema = new mongoose.Schema({
-  event: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Event',
-    required: true,
-  },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true,
+const Booking = sequelize.define('Booking', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
   fullName: {
-    type: String,
-    required: [true, 'Please add a full name'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   studentId: {
-    type: String,
-    required: [true, 'Please add a student ID'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   email: {
-    type: String,
-    required: [true, 'Please add an email'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true,
+      notEmpty: true
+    }
   },
   phoneNumber: {
-    type: String,
-    required: [true, 'Please add a phone number'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   comment: {
-    type: String,
-    maxlength: [500, 'Comment cannot be more than 500 characters'],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+    type: DataTypes.TEXT,
+    validate: {
+      len: [0, 500]
+    }
+  }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('Booking', BookingSchema);
+module.exports = Booking;

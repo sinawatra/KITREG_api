@@ -1,37 +1,54 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const EventSchema = new mongoose.Schema({
+const Event = sequelize.define('Event', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   title: {
-    type: String,
-    required: [true, 'Please add a title'],
-    trim: true,
-    maxlength: [100, 'Title cannot be more than 100 characters'],
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   place: {
-    type: String,
-    required: [true, 'Please add a place'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   date: {
-    type: Date,
-    required: [true, 'Please add a date'],
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      isDate: true
+    }
   },
   time: {
-    type: String,
-    required: [true, 'Please add a time'],
+    type: DataTypes.TIME,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   image: {
-    type: String,
-    required: [true, 'Please add an image'],
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   status: {
-    type: String,
-    enum: ['open', 'closed'],
-    default: 'open',
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+    type: DataTypes.ENUM('open', 'closed'),
+    defaultValue: 'open'
+  }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('Event', EventSchema);
+module.exports = Event;
